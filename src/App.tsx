@@ -1,7 +1,16 @@
+// Components
+import InputField from './components/InputField';
+
 const App = () => {
   return (
     <>
-      <p> Hello Deel Challenge </p>
+      <InputField
+        type='text'
+        label='Search Product'
+        placeholder='Search any product..'
+        onChange={() => {}}
+        value=''
+      />
     </>
   );
 };
