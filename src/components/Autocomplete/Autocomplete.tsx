@@ -1,19 +1,24 @@
 import { ChangeEvent, useState } from 'react';
 
+import { alphaNumericRegex } from '../../constants/validation';
 import InputField from '../InputField';
 import useProductSearch from './hooks/useProductSearch';
 import useInputBlur from './hooks/useInputBlur';
+import useDebounce from '../../hooks/useDebounce';
 
 import './autocomplete.css';
 
 const Autocomplete = () => {
   const [searchValue, setSetsearchValue] = useState<string>('');
-  const { products, error, isLoading } = useProductSearch(searchValue);
+  const debouncedSearchValue = useDebounce(searchValue);
+  const { products, error, isLoading } = useProductSearch(debouncedSearchValue);
   const { isInputFocussed, onInputFocus, onInputBlur, listRef, inputRef } =
     useInputBlur();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSetsearchValue(event.target.value);
+    const value = event.target.value;
+    if (!alphaNumericRegex.test(value)) return;
+    setSetsearchValue(value);
   };
 
   const onProductSelect = (productName: string) => {
@@ -22,6 +27,14 @@ const Autocomplete = () => {
   };
 
   const shouldShowProducts = !isLoading && isInputFocussed;
+
+  const highlightMatches = (text: string, searchTerm: string) => {
+    const regex = new RegExp(`(${searchTerm})`, 'gi');
+    return text.replace(
+      regex,
+      (match) => `<span class="highlight">${match}</span>`
+    );
+  };
 
   return (
     <div>
@@ -46,9 +59,10 @@ const Autocomplete = () => {
                 className='product-item'
                 key={product.id}
                 onClick={() => onProductSelect(product.title)}
-              >
-                {product.title}
-              </li>
+                dangerouslySetInnerHTML={{
+                  __html: highlightMatches(product.title, debouncedSearchValue),
+                }}
+              ></li>
             ))}
           </ul>
           {error && <p className='products-error'> {error} </p>}

@@ -7,7 +7,7 @@ interface InputFieldProps {
   label?: string;
   value: string | number;
   placeholder?: string;
-  error?: boolean;
+  error?: string;
   isDisabled?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleFocus?: (e: FocusEvent<HTMLInputElement>) => void;
@@ -23,6 +23,7 @@ const InputField = forwardRef(
       onChange,
       isDisabled = false,
       handleFocus,
+      error,
     }: InputFieldProps,
     ref: Ref<HTMLInputElement>
   ) => {
@@ -44,6 +45,7 @@ const InputField = forwardRef(
           onFocus={handleFocus}
           ref={ref}
         />
+        {error && <p> {error} </p>}
       </div>
     );
   }
