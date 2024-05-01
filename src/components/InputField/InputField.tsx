@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from 'react';
+import { FocusEvent, ChangeEvent, FC } from 'react';
 
 import './inputField.css';
 
@@ -10,6 +10,7 @@ interface InputFieldProps {
   error?: boolean;
   isDisabled?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleFocus?: (e: FocusEvent<HTMLInputElement>) => void;
 }
 
 const InputField: FC<InputFieldProps> = ({
@@ -19,6 +20,7 @@ const InputField: FC<InputFieldProps> = ({
   placeholder,
   onChange,
   isDisabled = false,
+  handleFocus,
 }) => {
   return (
     <div className='input-field-wrapper'>
@@ -35,6 +37,7 @@ const InputField: FC<InputFieldProps> = ({
         placeholder={placeholder}
         onChange={onChange}
         disabled={isDisabled}
+        onFocus={handleFocus}
       />
     </div>
   );
