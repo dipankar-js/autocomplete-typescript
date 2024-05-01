@@ -2,14 +2,15 @@ import { ChangeEvent, useState } from 'react';
 
 import InputField from '../InputField';
 import useProductSearch from './hooks/useProductSearch';
+import useInputBlur from './hooks/useInputBlur';
 
 import './autocomplete.css';
 
 const Autocomplete = () => {
   const [searchValue, setSetsearchValue] = useState<string>('');
-  const [isInputFocussed, setIsInputFocussed] = useState<boolean>(false);
-
   const { products, error, isLoading } = useProductSearch(searchValue);
+  const { isInputFocussed, onInputFocus, onInputBlur, listRef, inputRef } =
+    useInputBlur();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSetsearchValue(event.target.value);
@@ -17,11 +18,7 @@ const Autocomplete = () => {
 
   const onProductSelect = (productName: string) => {
     setSetsearchValue(productName);
-    setIsInputFocussed(false);
-  };
-
-  const handleFocus = () => {
-    setIsInputFocussed(true);
+    onInputBlur();
   };
 
   const shouldShowProducts = !isLoading && isInputFocussed;
@@ -34,14 +31,16 @@ const Autocomplete = () => {
         placeholder='Search any product..'
         onChange={handleInputChange}
         value={searchValue}
-        handleFocus={handleFocus}
+        handleFocus={onInputFocus}
+        ref={inputRef}
       />
       {isLoading && isInputFocussed && (
         <p className='products-loader'>Fetching Products....</p>
       )}
       {shouldShowProducts && (
-        <>
-          <ul className='product-list'>
+        <div>
+          {!products.length && <p> No Products found </p>}
+          <ul className='product-list' ref={listRef}>
             {products.map((product) => (
               <li
                 className='product-item'
@@ -53,7 +52,7 @@ const Autocomplete = () => {
             ))}
           </ul>
           {error && <p className='products-error'> {error} </p>}
-        </>
+        </div>
       )}
     </div>
   );

@@ -1,4 +1,4 @@
-import { FocusEvent, ChangeEvent, FC } from 'react';
+import { Ref, FocusEvent, ChangeEvent, forwardRef } from 'react';
 
 import './inputField.css';
 
@@ -13,34 +13,40 @@ interface InputFieldProps {
   handleFocus?: (e: FocusEvent<HTMLInputElement>) => void;
 }
 
-const InputField: FC<InputFieldProps> = ({
-  type,
-  label,
-  value,
-  placeholder,
-  onChange,
-  isDisabled = false,
-  handleFocus,
-}) => {
-  return (
-    <div className='input-field-wrapper'>
-      {label && (
-        <label className='input-label' htmlFor={label}>
-          {label}
-        </label>
-      )}
-      <input
-        className='input-field'
-        id={label}
-        type={type}
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-        disabled={isDisabled}
-        onFocus={handleFocus}
-      />
-    </div>
-  );
-};
+const InputField = forwardRef(
+  (
+    {
+      type,
+      label,
+      value,
+      placeholder,
+      onChange,
+      isDisabled = false,
+      handleFocus,
+    }: InputFieldProps,
+    ref: Ref<HTMLInputElement>
+  ) => {
+    return (
+      <div className='input-field-wrapper'>
+        {label && (
+          <label className='input-label' htmlFor={label}>
+            {label}
+          </label>
+        )}
+        <input
+          className='input-field'
+          id={label}
+          type={type}
+          value={value}
+          placeholder={placeholder}
+          onChange={onChange}
+          disabled={isDisabled}
+          onFocus={handleFocus}
+          ref={ref}
+        />
+      </div>
+    );
+  }
+);
 
 export default InputField;
