@@ -1,30 +1,18 @@
-# React + TypeScript + Vite
+# Autocomplete Component build with React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### Steps to run this App
 
-Currently, two official plugins are available:
+- `git clone` the repo
+- `yarn install`
+- `yarn dev`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Description
 
-## Expanding the ESLint configuration
+It's a simple product search auto-complete component.Products will be fetched from a api and displayed on input focus.Once user type search call will go to fetch the matching products.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Features
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Matching words highlighting
+- Debound added for performance enhancement
+- Keyboard events added for good user experience
+- Error handling added to catch edge cases
