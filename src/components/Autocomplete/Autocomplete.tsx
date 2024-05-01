@@ -3,8 +3,10 @@ import { ChangeEvent, useState } from 'react';
 import { alphaNumericRegex } from '../../constants/validation';
 import InputField from '../InputField';
 import useProductSearch from './hooks/useProductSearch';
+import useKeyboardActions from './hooks/useKeyboardActions';
 import useInputBlur from './hooks/useInputBlur';
 import useDebounce from '../../hooks/useDebounce';
+import { highlightMatches } from './autocomplete.helpers';
 
 import './autocomplete.css';
 
@@ -14,6 +16,13 @@ const Autocomplete = () => {
   const { products, error, isLoading } = useProductSearch(debouncedSearchValue);
   const { isInputFocussed, onInputFocus, onInputBlur, listRef, inputRef } =
     useInputBlur();
+
+  const { onKeyDown, activeItem } = useKeyboardActions({
+    listRef,
+    listLength: products.length,
+    products,
+    setSetsearchValue,
+  });
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -28,14 +37,6 @@ const Autocomplete = () => {
 
   const shouldShowProducts = !isLoading && isInputFocussed;
 
-  const highlightMatches = (text: string, searchTerm: string) => {
-    const regex = new RegExp(`(${searchTerm})`, 'gi');
-    return text.replace(
-      regex,
-      (match) => `<span class="highlight">${match}</span>`
-    );
-  };
-
   return (
     <div>
       <InputField
@@ -45,6 +46,7 @@ const Autocomplete = () => {
         onChange={handleInputChange}
         value={searchValue}
         handleFocus={onInputFocus}
+        onKeyDown={onKeyDown}
         ref={inputRef}
       />
       {isLoading && isInputFocussed && (
@@ -54,9 +56,11 @@ const Autocomplete = () => {
         <div>
           {!products.length && <p> No Products found </p>}
           <ul className='product-list' ref={listRef}>
-            {products.map((product) => (
+            {products.map((product, index) => (
               <li
-                className='product-item'
+                className={`product-item ${
+                  index === activeItem ? 'active-item' : ''
+                }`}
                 key={product.id}
                 onClick={() => onProductSelect(product.title)}
                 dangerouslySetInnerHTML={{

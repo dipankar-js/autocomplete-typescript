@@ -7,7 +7,7 @@
 }
 
 .product-list .product-item {
-  padding: 10px 0;
+  padding: 10px 5px;
   font-size: 15px;
   cursor: pointer;
 }
@@ -27,4 +27,8 @@
 
 .highlight {
   background-color: rgb(240, 240, 120);
+}
+
+.active-item {
+  background-color: aliceblue;
 }

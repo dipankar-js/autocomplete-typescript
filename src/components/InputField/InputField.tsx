@@ -1,4 +1,4 @@
-import { Ref, FocusEvent, ChangeEvent, forwardRef } from 'react';
+import { Ref, FocusEvent, KeyboardEvent, ChangeEvent, forwardRef } from 'react';
 
 import './inputField.css';
 
@@ -11,6 +11,7 @@ interface InputFieldProps {
   isDisabled?: boolean;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleFocus?: (e: FocusEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const InputField = forwardRef(
@@ -24,6 +25,7 @@ const InputField = forwardRef(
       isDisabled = false,
       handleFocus,
       error,
+      onKeyDown,
     }: InputFieldProps,
     ref: Ref<HTMLInputElement>
   ) => {
@@ -43,6 +45,7 @@ const InputField = forwardRef(
           onChange={onChange}
           disabled={isDisabled}
           onFocus={handleFocus}
+          onKeyDown={onKeyDown}
           ref={ref}
         />
         {error && <p> {error} </p>}
